@@ -1,0 +1,25 @@
+# Template file for 'umbriel'
+pkgname=umbriel
+version=0.1.0
+revision=1
+_commit=ef51066637c1b36f3f9c7fc89dd6b691d8aa600b
+wrksrc="umbriel-${_commit}"
+build_style=meson
+configure_args="-Dtests=disabled -Djemalloc=disabled"
+hostmakedepends="pkg-config wayland-devel"
+makedepends="wlroots0.20-devel wayland-devel wayland-protocols libxkbcommon-devel
+ libinput-devel eudev-libudev-devel pixman-devel libdrm-devel
+ libdisplay-info0.3-devel cairo-devel pango-devel tomlplusplus-devel
+ json-c++ libxcb-devel xcb-util-wm-devel libgbm-devel
+ libglvnd-devel lcms2-devel"
+depends="xorg-server-xwayland virtual?font:sans-serif"
+short_desc="Wayland compositor built on wlroots"
+maintainer="BlackScorp <cccpmik@gmail.com>"
+license="MIT"
+homepage="https://github.com/noctalia-dev/umbriel"
+distfiles="${homepage}/archive/${_commit}.tar.gz"
+checksum=bbd718caf03160e37e50214f62eb2185296fc79d3b574c344544e406c2163835
+
+post_install() {
+	vlicense LICENSE
+}
