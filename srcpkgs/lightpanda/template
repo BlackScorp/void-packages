@@ -1,0 +1,52 @@
+# Template file for 'lightpanda'
+#
+# V8 is linked as the prebuilt static library published by zig-v8-fork, the
+# same artifact upstream's `make download-v8` uses. Building V8 from source is
+# possible (drop -Dprebuilt_v8_path) but takes hours and tens of GB.
+# The build fetches its Zig dependencies from the network (build.zig.zon), so
+# it is not ready for submission without vendoring them.
+# Only x86_64: the checksum below is arch specific, xgensum would overwrite the
+# aarch64 sum with it.
+pkgname=lightpanda
+version=1.0.2
+revision=1
+archs="x86_64"
+hostmakedepends="cargo git zig017"
+short_desc="Headless browser built for AI and automation"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="AGPL-3.0-only"
+homepage="https://lightpanda.io"
+nopie=yes
+
+# Both versions are read from .github/actions/install/action.yml in the tree of
+# ${version} (`v8:` and `zig-v8:`), they have to match what upstream ships.
+_v8ver=15.5.35.13
+_v8tag=v0.5.9
+_v8lib="libc_v8_${_v8ver}_linux_x86_64.a"
+
+distfiles="https://github.com/lightpanda-io/browser/archive/refs/tags/${version}.tar.gz
+ https://github.com/lightpanda-io/zig-v8-fork/releases/download/${_v8tag}/${_v8lib}"
+checksum="6a7a274acfdbf6d87b573d1a90029d2e17f71f718f78b03099d96d48f514d64e
+ eed0fa1a97d815e2f5000e7a29153d62e06ef92d2d80a024598701394e9322cb"
+skip_extraction="${_v8lib}"
+
+post_extract() {
+	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_v8lib}" "${wrksrc}/${_v8lib}"
+}
+
+do_build() {
+	export PATH="/usr/lib/zig-0.17:${PATH}"
+	export ZIG_GLOBAL_CACHE_DIR=/host/zig
+	export CARGO_HOME="${wrksrc}/.cargo-home"
+
+	# V8 ships as an embedded snapshot, it has to be generated first.
+	zig build -Doptimize=fast -Dversion=${version} -Dprebuilt_v8_path="${wrksrc}/${_v8lib}" \
+		snapshot_creator -- src/snapshot.bin
+	zig build -Doptimize=fast -Dversion=${version} -Dprebuilt_v8_path="${wrksrc}/${_v8lib}" \
+		-Dsnapshot_path=../../snapshot.bin
+}
+
+do_install() {
+	vinstall zig-out/bin/lightpanda 755 usr/bin
+	vlicense LICENSE
+}
