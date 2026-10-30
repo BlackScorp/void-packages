@@ -1,0 +1,20 @@
+# Template file for 'goose'
+pkgname=goose
+version=1.57.0
+revision=1
+build_style=cargo
+configure_args="--package goose-cli"
+hostmakedepends="clang cmake libclang pkg-config"
+makedepends="dbus-devel libzstd-devel oniguruma-devel openssl-devel sqlite-devel"
+short_desc="General-purpose AI agent for terminal workflows"
+maintainer=""
+license="Apache-2.0"
+homepage="https://github.com/aaif-goose/goose"
+changelog="https://github.com/aaif-goose/goose/releases"
+distfiles="https://github.com/aaif-goose/goose/archive/refs/tags/v${version}.tar.gz"
+checksum=36fcab524e25ca563830757bf2da8a68716ea2a5d7ca2f055dec4647b78548d9
+
+do_install() {
+	vbin target/${RUST_TARGET}/release/goose
+	vlicense LICENSE
+}
