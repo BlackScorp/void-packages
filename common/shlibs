@@ -408,6 +408,13 @@ libpostproc.so.57 libpostproc6-6.0_1
 libavcodec.so.60 libavcodec6-6.0_1
 libavutil.so.58 libavutil6-6.0_1
 libavfilter.so.9 libavfilter6-6.0_1
+libavcodec.so.62 libavcodec8-8.1.3_1
+libavdevice.so.62 libavdevice8-8.1.3_1
+libavfilter.so.11 libavfilter8-8.1.3_1
+libavformat.so.62 libavformat8-8.1.3_1
+libavutil.so.60 libavutil8-8.1.3_1
+libswresample.so.6 libswresample8-8.1.3_1
+libswscale.so.9 libswscale8-8.1.3_1
 libdispatch.so libdispatch-5.10.1_1
 libBlocksRuntime.so libdispatch-5.10.1_1
 libavdevice.so.58 libavdevice-4.0_1
