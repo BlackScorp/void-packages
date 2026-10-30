@@ -1,0 +1,38 @@
+# Template file for 'zig017'
+#
+# Side-by-side install of the Zig 0.17 bootstrap compiler, used by packages
+# that need a newer Zig than the one provided by 'zig'. Everything lives
+# under /usr/lib/zig-0.17, only /usr/bin/zig-0.17 is exposed.
+pkgname=zig017
+version=0.17.0
+revision=1
+archs="x86_64* aarch64*"
+nostrip=yes
+nopie=yes
+short_desc="Programming language designed for robustness, optimality, and clarity (0.17)"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://ziglang.org"
+
+case "$XBPS_TARGET_MACHINE" in
+x86_64*)
+	distfiles="https://ziglang.org/download/${version}/zig-x86_64-linux-${version}.tar.xz"
+	checksum=1cbe9df9f27e6b78d14ccbca43b6703a404ef79ef1c463de901d7f088d4e2026
+	;;
+aarch64*)
+	distfiles="https://ziglang.org/download/${version}/zig-aarch64-linux-${version}.tar.xz"
+	checksum=9e8d11661d4ae3bd57702a3832781e23ad151dde5798e16a5ccd503f65234ff8
+	;;
+*)
+	broken="No prebuilt Zig binaries for this target"
+	;;
+esac
+
+do_install() {
+	vmkdir usr/lib/zig-0.17
+	vcopy zig usr/lib/zig-0.17
+	vcopy lib usr/lib/zig-0.17
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}"/usr/lib/zig-0.17/zig "${DESTDIR}"/usr/bin/zig-0.17
+	vlicense LICENSE
+}
