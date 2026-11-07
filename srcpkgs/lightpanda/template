@@ -8,7 +8,7 @@
 # Only x86_64: the checksum below is arch specific, xgensum would overwrite the
 # aarch64 sum with it.
 pkgname=lightpanda
-version=1.0.2
+version=1.0.3
 revision=1
 archs="x86_64"
 hostmakedepends="cargo git zig017"
@@ -21,17 +21,18 @@ nopie=yes
 # Both versions are read from .github/actions/install/action.yml in the tree of
 # ${version} (`v8:` and `zig-v8:`), they have to match what upstream ships.
 _v8ver=15.5.35.13
-_v8tag=v0.5.9
+_v8tag=v0.6.1
 _v8lib="libc_v8_${_v8ver}_linux_x86_64.a"
+_v8dist="${_v8tag}_${_v8lib}"
 
 distfiles="https://github.com/lightpanda-io/browser/archive/refs/tags/${version}.tar.gz
- https://github.com/lightpanda-io/zig-v8-fork/releases/download/${_v8tag}/${_v8lib}"
-checksum="6a7a274acfdbf6d87b573d1a90029d2e17f71f718f78b03099d96d48f514d64e
- eed0fa1a97d815e2f5000e7a29153d62e06ef92d2d80a024598701394e9322cb"
-skip_extraction="${_v8lib}"
+ https://github.com/lightpanda-io/zig-v8-fork/releases/download/${_v8tag}/${_v8lib}>${_v8dist}"
+checksum="6050074a29c249e929edb695cec3a454e6a3481625e74fabcec0534fa3fc8ab1
+ a1e14e88d8b81619d1ee589683a853c4bde061f79959aed1fc1bd0620a26c370"
+skip_extraction="${_v8dist}"
 
 post_extract() {
-	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_v8lib}" "${wrksrc}/${_v8lib}"
+	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_v8dist}" "${wrksrc}/${_v8lib}"
 }
 
 do_build() {
