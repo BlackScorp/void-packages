@@ -1,0 +1,21 @@
+# Template file for 'localsend'
+pkgname=localsend
+version=1.18.2
+revision=1
+archs="x86_64"
+wrksrc="."
+short_desc="Share files with nearby devices"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://github.com/localsend/localsend"
+distfiles="https://github.com/localsend/localsend/releases/download/v${version}/LocalSend-${version}-linux-x86-64.tar.gz"
+checksum=287690a9a8eb6da9c83cc97b3e3030ac67daf32a7331fcf307d0939300658d16
+
+do_install() {
+	vmkdir usr/lib/localsend
+	cp -a data lib localsend_app "${DESTDIR}/usr/lib/localsend/"
+	vmkdir usr/bin
+	ln -s ../lib/localsend/localsend_app "${DESTDIR}/usr/bin/localsend"
+	vinstall "${FILESDIR}/localsend.desktop" 644 usr/share/applications
+	vinstall data/flutter_assets/assets/img/logo-512.png 644 usr/share/icons/hicolor/512x512/apps localsend.png
+}

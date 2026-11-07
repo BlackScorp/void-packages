@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=LocalSend
+Comment=Share files with nearby devices
+Exec=localsend
+Icon=localsend
+Categories=Network;FileTransfer;
+Terminal=false
